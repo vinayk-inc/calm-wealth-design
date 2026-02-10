@@ -27,7 +27,7 @@ const SiteHeader = () => {
     >
       <div className="section-container flex items-center justify-between h-16 md:h-20">
         <a href="#" className="font-serif text-lg md:text-xl tracking-wide text-foreground">
-          WealthPath
+          vinay.inc
         </a>
 
         {/* Desktop nav */}
