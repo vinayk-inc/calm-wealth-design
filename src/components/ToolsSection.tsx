@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+import { Calculator, Target, UserCheck } from "lucide-react";
+
 const tools = [
-  { name: "SIP Calculator", status: "Coming Soon" },
-  { name: "Goal Planning Calculator", status: "Coming Soon" },
-  { name: "Risk Profiling Quiz", status: "Coming Soon" },
-  { name: "Portfolio Tracker", status: "Demo" },
+  { name: "SIP Calculator", path: "/sip-calculator", icon: Calculator, status: "Live" },
+  { name: "Goal Planning Calculator", path: "/goal-planner", icon: Target, status: "Live" },
+  { name: "Risk Profiling Quiz", path: "/risk-profile", icon: UserCheck, status: "Live" },
 ];
 
 const ToolsSection = () => {
@@ -14,20 +16,25 @@ const ToolsSection = () => {
         </h2>
         <div className="gold-divider mb-16" />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tools.map((tool) => (
-            <div
-              key={tool.name}
-              className="border border-border p-8 text-center opacity-60 hover:opacity-80 transition-opacity duration-500"
-            >
-              <h3 className="font-serif text-base text-foreground mb-3">
-                {tool.name}
-              </h3>
-              <span className="text-xs tracking-widest uppercase text-muted-foreground">
-                {tool.status}
-              </span>
-            </div>
-          ))}
+        <div className="grid sm:grid-cols-3 gap-6">
+          {tools.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <Link
+                key={tool.name}
+                to={tool.path}
+                className="border border-border p-8 text-center hover:border-primary/50 hover:bg-accent/30 transition-all duration-500 group"
+              >
+                <Icon className="w-8 h-8 mx-auto mb-4 text-primary opacity-70 group-hover:opacity-100 transition-opacity" />
+                <h3 className="font-serif text-base text-foreground mb-3">
+                  {tool.name}
+                </h3>
+                <span className="text-xs tracking-widest uppercase text-primary">
+                  Try Now →
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

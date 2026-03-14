@@ -19,6 +19,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/sip-calculator" element={<SipCalculator />} />
+          <Route path="/goal-planner" element={<GoalPlanner />} />
+          <Route path="/risk-profile" element={<RiskProfileQuiz />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
