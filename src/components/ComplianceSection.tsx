@@ -1,4 +1,4 @@
-import prudentLogo from "@/assets/prudent-logo.png";
+import prudentLogo from "@/assets/prudent-logo.svg";
 
 const ComplianceSection = () => {
   return (
