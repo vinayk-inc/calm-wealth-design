@@ -1,3 +1,5 @@
+import prudentLogo from "@/assets/prudent-logo.png";
+
 const ComplianceSection = () => {
   return (
     <section id="compliance" className="py-24 md:py-32">
@@ -13,25 +15,28 @@ const ComplianceSection = () => {
               <p className="text-xs tracking-widest uppercase text-foreground/60 mb-2">
                 ARN Number
               </p>
-              <p className="text-foreground">ARN-XXXXXX</p>
+              <p className="text-foreground">ARN-354061</p>
             </div>
             <div className="border border-border p-6">
               <p className="text-xs tracking-widest uppercase text-foreground/60 mb-2">
                 EUIN Number
               </p>
-              <p className="text-foreground">E-XXXXXX</p>
+              <p className="text-foreground">E675648</p>
             </div>
           </div>
 
           <div className="border border-border p-6">
             <p className="text-xs tracking-widest uppercase text-foreground/60 mb-3">
-              Empaneled AMCs
+              Empaneled With
             </p>
-            <p>
-              SBI Mutual Fund, HDFC Mutual Fund, ICICI Prudential, Axis Mutual Fund,
-              Kotak Mutual Fund, Nippon India, DSP Mutual Fund, Mirae Asset, Parag Parikh,
-              UTI Mutual Fund, and others.
-            </p>
+            <div className="flex items-center gap-4">
+              <img
+                src={prudentLogo}
+                alt="Prudent Corporate Advisory Services"
+                className="h-10 w-auto object-contain bg-white/90 rounded px-2 py-1"
+              />
+              <p className="text-foreground">Prudent Corporate Advisory Services</p>
+            </div>
           </div>
 
           <div className="border-t border-border pt-6">
