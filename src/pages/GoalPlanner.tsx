@@ -174,14 +174,9 @@ const GoalPlanner = () => {
                   </Label>
                   <Input
                     type="number"
-                    min={10000}
-                    max={1000000000}
                     value={currentCost}
-                    onChange={(e) =>
-                      setCurrentCost(
-                        Math.max(10000, Math.min(1000000000, Number(e.target.value)))
-                      )
-                    }
+                    onChange={(e) => setCurrentCost(Number(e.target.value) || 0)}
+                    onBlur={() => setCurrentCost(Math.max(10000, Math.min(1000000000, currentCost)))}
                     className="mt-2 bg-secondary border-border"
                   />
                 </div>
