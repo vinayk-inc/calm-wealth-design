@@ -111,14 +111,9 @@ const SipCalculator = () => {
                   </Label>
                   <Input
                     type="number"
-                    min={500}
-                    max={10000000}
                     value={monthlyAmount}
-                    onChange={(e) =>
-                      setMonthlyAmount(
-                        Math.max(500, Math.min(10000000, Number(e.target.value)))
-                      )
-                    }
+                    onChange={(e) => setMonthlyAmount(Number(e.target.value) || 0)}
+                    onBlur={() => setMonthlyAmount(Math.max(500, Math.min(10000000, monthlyAmount)))}
                     className="mt-2 bg-secondary border-border"
                   />
                 </div>
