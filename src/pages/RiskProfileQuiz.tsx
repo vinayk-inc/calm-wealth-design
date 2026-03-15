@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -126,6 +126,7 @@ const profileInfo: Record<
 
 const RiskProfileQuiz = () => {
   const { toast } = useToast();
+  useEffect(() => { window.scrollTo(0, 0); }, []);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(10).fill(-1));
   const [showResult, setShowResult] = useState(false);

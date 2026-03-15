@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,6 +35,8 @@ const SipCalculator = () => {
   const [duration, setDuration] = useState(10);
   const [stepUpEnabled, setStepUpEnabled] = useState(false);
   const [stepUpPercent, setStepUpPercent] = useState(10);
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   const results = useMemo(() => {
     const yearlyData: {

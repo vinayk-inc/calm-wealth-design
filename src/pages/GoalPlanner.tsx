@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -58,6 +58,8 @@ const GoalPlanner = () => {
   const [years, setYears] = useState(15);
   const [inflation, setInflation] = useState(6);
   const [expectedReturn, setExpectedReturn] = useState(12);
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   const results = useMemo(() => {
     const futureCost = currentCost * Math.pow(1 + inflation / 100, years);
