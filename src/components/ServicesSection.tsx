@@ -48,7 +48,7 @@ const ServicesSection = () => {
         </h2>
         <div className="gold-divider mb-16" />
 
-        <div className="grid md:grid-cols-3 gap-8 md:gap-6 lg:gap-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 lg:gap-10">
           {services.map((service) => (
             <div
               key={service.title}
