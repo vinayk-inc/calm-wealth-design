@@ -9,6 +9,7 @@ import ToolsSection from "@/components/ToolsSection";
 import ComplianceSection from "@/components/ComplianceSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import CtaSection from "@/components/CtaSection";
+import ConsultationSection from "@/components/ConsultationSection";
 import SiteFooter from "@/components/SiteFooter";
 
 const Index = () => {
