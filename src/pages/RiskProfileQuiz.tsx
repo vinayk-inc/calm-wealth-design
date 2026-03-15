@@ -126,6 +126,7 @@ const profileInfo: Record<
 
 const RiskProfileQuiz = () => {
   const { toast } = useToast();
+  useEffect(() => { window.scrollTo(0, 0); }, []);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(10).fill(-1));
   const [showResult, setShowResult] = useState(false);
