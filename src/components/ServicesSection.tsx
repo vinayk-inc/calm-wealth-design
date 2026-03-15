@@ -26,6 +26,17 @@ const services = [
       "Multi-AMC portfolio construction",
     ],
   },
+  {
+    title: "Insurance Planning & Risk Protection",
+    items: [
+      "Term Life Insurance Planning",
+      "Health Insurance Guidance",
+      "Family Financial Protection Strategy",
+      "Income Replacement Planning",
+      "Long-Term Risk Management",
+      "Insurance Portfolio Review",
+    ],
+  },
 ];
 
 const ServicesSection = () => {
