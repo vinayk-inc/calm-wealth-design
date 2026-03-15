@@ -59,6 +59,8 @@ const GoalPlanner = () => {
   const [inflation, setInflation] = useState(6);
   const [expectedReturn, setExpectedReturn] = useState(12);
 
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   const results = useMemo(() => {
     const futureCost = currentCost * Math.pow(1 + inflation / 100, years);
     const r = expectedReturn / 100 / 12;

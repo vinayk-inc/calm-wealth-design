@@ -36,6 +36,8 @@ const SipCalculator = () => {
   const [stepUpEnabled, setStepUpEnabled] = useState(false);
   const [stepUpPercent, setStepUpPercent] = useState(10);
 
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   const results = useMemo(() => {
     const yearlyData: {
       year: number;
