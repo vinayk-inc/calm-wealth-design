@@ -1,14 +1,48 @@
+import { useState, useEffect } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
+  const [showNotice, setShowNotice] = useState(false);
+
+  useEffect(() => {
+    const show = () => {
+      setShowNotice(true);
+      setTimeout(() => setShowNotice(false), 5000);
+    };
+
+    // Show first time after 2s, then every 10s
+    const initialTimer = setTimeout(() => {
+      show();
+      const interval = setInterval(show, 10000);
+      return () => clearInterval(interval);
+    }, 2000);
+
+    return () => clearTimeout(initialTimer);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Availability notice */}
-      <div className="absolute top-24 right-6 md:right-12 lg:right-16 z-20">
-        <p className="text-xs md:text-sm text-muted-foreground tracking-wide">
-          Limited consultation availability this week — <span className="text-accent-foreground font-medium">4 slots remaining</span>
+      {/* Availability popup notice */}
+      <div
+        className={`fixed bottom-6 right-6 z-50 max-w-xs bg-card border border-border/60 rounded-sm px-5 py-3.5 shadow-lg transition-all duration-500 ${
+          showNotice
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+      >
+        <p className="text-xs md:text-sm text-muted-foreground tracking-wide leading-relaxed">
+          Limited consultation availability this week —{" "}
+          <span className="text-accent-foreground font-medium">4 slots remaining</span>
         </p>
+        <button
+          onClick={() => setShowNotice(false)}
+          className="absolute top-1.5 right-2.5 text-muted-foreground hover:text-foreground text-xs"
+          aria-label="Dismiss"
+        >
+          ✕
+        </button>
       </div>
+
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
