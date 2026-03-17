@@ -3,6 +3,12 @@ import heroBg from "@/assets/hero-bg.jpg";
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Availability notice */}
+      <div className="absolute top-24 right-6 md:right-12 lg:right-16 z-20">
+        <p className="text-xs md:text-sm text-muted-foreground tracking-wide">
+          Limited consultation availability this week — <span className="text-accent-foreground font-medium">4 slots remaining</span>
+        </p>
+      </div>
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
