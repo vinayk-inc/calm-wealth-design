@@ -5,19 +5,22 @@ const HeroSection = () => {
   const [showNotice, setShowNotice] = useState(false);
 
   useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+
     const show = () => {
       setShowNotice(true);
       setTimeout(() => setShowNotice(false), 5000);
     };
 
-    // Show first time after 2s, then every 10s
     const initialTimer = setTimeout(() => {
       show();
-      const interval = setInterval(show, 10000);
-      return () => clearInterval(interval);
+      interval = setInterval(show, 10000);
     }, 2000);
 
-    return () => clearTimeout(initialTimer);
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
