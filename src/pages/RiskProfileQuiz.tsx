@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { isSupabaseConfigured, supabase } from "@/lib/supabaseClient";
 
 const questions = [
   {
@@ -126,7 +127,9 @@ const profileInfo: Record<
 
 const RiskProfileQuiz = () => {
   const { toast } = useToast();
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(10).fill(-1));
   const [showResult, setShowResult] = useState(false);
@@ -163,7 +166,9 @@ const RiskProfileQuiz = () => {
     if (currentQ > 0) setCurrentQ(currentQ - 1);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const [isSavingLead, setIsSavingLead] = useState(false);
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedName = formData.name.trim();
     const trimmedEmail = formData.email.trim();
@@ -178,19 +183,51 @@ const RiskProfileQuiz = () => {
       return;
     }
     if (!trimmedPhone || !/^[6-9]\d{9}$/.test(trimmedPhone)) {
-      toast({ title: "Please enter a valid 10-digit phone number", variant: "destructive" });
+      toast({
+        title: "Please enter a valid 10-digit phone number",
+        variant: "destructive",
+      });
       return;
     }
 
-    // For now, log the data (backend integration can be added later)
-    console.info("Risk profile lead:", {
-      ...formData,
-      profile: getProfile(),
-      score: totalScore,
-    });
+    try {
+      setIsSavingLead(true);
+      if (!isSupabaseConfigured || !supabase) {
+        throw new Error(
+          "Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, then restart the dev server.",
+        );
+      }
+      const payload = {
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: trimmedPhone,
+        goal: (formData.goal || "").trim() || null,
+        monthly_capacity: (formData.monthlyCapacity || "").trim() || null,
+        profile,
+        score: totalScore,
+        answers,
+        source: "risk_profile_quiz",
+        user_agent: navigator.userAgent,
+      };
 
-    setFormSubmitted(true);
-    toast({ title: "Thank you! Our advisor will contact you shortly." });
+      const { error } = await supabase
+        .from("risk_profile_leads")
+        .insert(payload);
+      if (error) throw error;
+
+      setFormSubmitted(true);
+      toast({ title: "Thank you! Our advisor will contact you shortly." });
+    } catch (err) {
+      console.error("Failed to save lead to Supabase:", err);
+      toast({
+        title: "Could not save your details",
+        description:
+          err instanceof Error ? err.message : "Please try again in a moment.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSavingLead(false);
+    }
   };
 
   const progress = ((currentQ + 1) / 10) * 100;
@@ -246,7 +283,10 @@ const RiskProfileQuiz = () => {
                       </Button>
                     </div>
                   ) : (
-                    <form onSubmit={handleFormSubmit} className="space-y-4 max-w-md mx-auto">
+                    <form
+                      onSubmit={handleFormSubmit}
+                      className="space-y-4 max-w-md mx-auto"
+                    >
                       <div>
                         <Label className="text-xs uppercase tracking-wider text-muted-foreground">
                           Full Name *
@@ -322,9 +362,12 @@ const RiskProfileQuiz = () => {
                       </div>
                       <Button
                         type="submit"
+                        disabled={isSavingLead}
                         className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                       >
-                        Request Consultation
+                        {isSavingLead
+                          ? "Submitting..."
+                          : "Request Consultation"}
                       </Button>
                     </form>
                   )}
@@ -376,9 +419,7 @@ const RiskProfileQuiz = () => {
           {/* Progress */}
           <div className="mb-8">
             <div className="flex justify-between text-xs text-muted-foreground mb-2">
-              <span>
-                Question {currentQ + 1} of 10
-              </span>
+              <span>Question {currentQ + 1} of 10</span>
               <span>{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-1.5" />
