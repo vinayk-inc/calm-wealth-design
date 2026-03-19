@@ -36,6 +36,7 @@ const Index = () => {
         <ComplianceSection />
         <ReviewsSection />
         <CtaSection />
+        <ConsultationSection />
       </main>
       <SiteFooter />
     </>
