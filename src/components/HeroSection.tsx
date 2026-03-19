@@ -71,7 +71,7 @@ const HeroSection = () => {
             rel="noopener noreferrer"
             className="px-8 py-3.5 bg-primary text-primary-foreground font-sans text-sm tracking-widest uppercase transition-all duration-300 hover:bg-primary/90"
           >
-            Book a Consultation
+            Book a Call
           </a>
           <a
             href="#services"
