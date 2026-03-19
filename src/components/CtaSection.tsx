@@ -1,7 +1,11 @@
 const CtaSection = () => {
-  const scrollToConsultation = () => {
+  const handleConsultation = () => {
     const el = document.getElementById("consultation");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      // Trigger the form to open via a custom event
+      window.dispatchEvent(new CustomEvent("open-consultation-form"));
+    }
   };
 
   return (
@@ -22,7 +26,7 @@ const CtaSection = () => {
             Book a Call
           </a>
           <button
-            onClick={scrollToConsultation}
+            onClick={handleConsultation}
             className="px-8 py-3.5 border border-primary text-primary font-sans text-sm tracking-widest uppercase transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
           >
             Request Consultation
