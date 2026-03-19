@@ -3,11 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { isSupabaseConfigured, supabase } from "@/lib/supabaseClient";
 
 const ConsultationSection = () => {
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isSavingLead, setIsSavingLead] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,7 +18,7 @@ const ConsultationSection = () => {
     monthlyCapacity: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedName = formData.name.trim();
     const trimmedEmail = formData.email.trim();
@@ -35,9 +37,43 @@ const ConsultationSection = () => {
       return;
     }
 
-    console.info("Consultation lead:", formData);
-    setSubmitted(true);
-    toast({ title: "Thank you! Our advisor will contact you shortly." });
+    try {
+      setIsSavingLead(true);
+      if (!isSupabaseConfigured || !supabase) {
+        throw new Error(
+          "Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, then restart the dev server.",
+        );
+      }
+
+      const payload = {
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: trimmedPhone,
+        goal: (formData.goal || "").trim() || null,
+        monthly_capacity: (formData.monthlyCapacity || "").trim() || null,
+        source: "consultation_section",
+        user_agent: navigator.userAgent,
+      };
+
+      const { error } = await supabase
+        .from("consultation_leads")
+        .insert(payload);
+
+      if (error) throw error;
+
+      setSubmitted(true);
+      toast({ title: "Thank you! Our advisor will contact you shortly." });
+    } catch (err) {
+      console.error("Failed to save consultation lead to Supabase:", err);
+      toast({
+        title: "Could not save your details",
+        description:
+          err instanceof Error ? err.message : "Please try again in a moment.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSavingLead(false);
+    }
   };
 
   return (
@@ -128,9 +164,10 @@ const ConsultationSection = () => {
             </div>
             <Button
               type="submit"
+              disabled={isSavingLead}
               className="w-full bg-primary text-primary-foreground hover:bg-primary/90 tracking-widest uppercase text-sm"
             >
-              Submit
+              {isSavingLead ? "Submitting..." : "Submit"}
             </Button>
           </form>
         )}
