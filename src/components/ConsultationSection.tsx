@@ -99,14 +99,7 @@ const ConsultationSection = () => {
               Our advisor will contact you shortly.
             </p>
           </div>
-        ) : !showForm ? (
-          <Button
-            onClick={() => setShowForm(true)}
-            className="px-8 py-3.5 bg-primary text-primary-foreground font-sans text-sm tracking-widest uppercase transition-all duration-300 hover:bg-primary/90"
-          >
-            Request Consultation
-          </Button>
-        ) : (
+        ) : showForm ? (
           <form onSubmit={handleSubmit} className="space-y-5 text-left max-w-md mx-auto">
             <div>
               <Label className="text-xs uppercase tracking-wider text-muted-foreground">
