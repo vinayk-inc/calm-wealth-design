@@ -18,6 +18,12 @@ const ConsultationSection = () => {
     monthlyCapacity: "",
   });
 
+  useEffect(() => {
+    const handler = () => setShowForm(true);
+    window.addEventListener("open-consultation-form", handler);
+    return () => window.removeEventListener("open-consultation-form", handler);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedName = formData.name.trim();
