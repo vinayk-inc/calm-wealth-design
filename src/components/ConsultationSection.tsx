@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,12 @@ const ConsultationSection = () => {
     goal: "",
     monthlyCapacity: "",
   });
+
+  useEffect(() => {
+    const handler = () => setShowForm(true);
+    window.addEventListener("open-consultation-form", handler);
+    return () => window.removeEventListener("open-consultation-form", handler);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,14 +99,7 @@ const ConsultationSection = () => {
               Our advisor will contact you shortly.
             </p>
           </div>
-        ) : !showForm ? (
-          <Button
-            onClick={() => setShowForm(true)}
-            className="px-8 py-3.5 bg-primary text-primary-foreground font-sans text-sm tracking-widest uppercase transition-all duration-300 hover:bg-primary/90"
-          >
-            Request Consultation
-          </Button>
-        ) : (
+        ) : showForm ? (
           <form onSubmit={handleSubmit} className="space-y-5 text-left max-w-md mx-auto">
             <div>
               <Label className="text-xs uppercase tracking-wider text-muted-foreground">
@@ -170,7 +169,7 @@ const ConsultationSection = () => {
               {isSavingLead ? "Submitting..." : "Submit"}
             </Button>
           </form>
-        )}
+        ) : null}
       </div>
     </section>
   );
