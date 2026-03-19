@@ -169,7 +169,7 @@ const ConsultationSection = () => {
               {isSavingLead ? "Submitting..." : "Submit"}
             </Button>
           </form>
-        )}
+        ) : null}
       </div>
     </section>
   );
