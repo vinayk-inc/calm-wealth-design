@@ -58,6 +58,7 @@ const SiteHeader = () => {
           <span className={`block w-5 h-px bg-foreground transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`} />
           <span className={`block w-5 h-px bg-foreground transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-[3.5px]" : ""}`} />
         </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
