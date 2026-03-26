@@ -29,9 +29,27 @@ const MarketTicker = () => {
       return response.json();
     };
 
+    const fetchMarketPayload = async () => {
+      const endpoints = [
+        "/api/market",
+        `https://api.allorigins.win/raw?url=${encodeURIComponent("https://www.nseindia.com/api/allIndices")}`,
+      ];
+
+      let lastError: unknown = null;
+      for (const endpoint of endpoints) {
+        try {
+          return await fetchJson(endpoint);
+        } catch (error) {
+          lastError = error;
+        }
+      }
+
+      throw lastError ?? new Error("Unable to fetch market data");
+    };
+
     const fetchQuotes = async () => {
       try {
-        const data = await fetchJson("/api/market");
+        const data = await fetchMarketPayload();
         const quotes = data?.data as
           | Array<{
               index?: string;
