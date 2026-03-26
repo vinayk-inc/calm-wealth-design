@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import MarketTicker from "./MarketTicker";
 
 const navLinks = [
   { label: "About", href: "#positioning" },
@@ -27,9 +26,6 @@ const SiteHeader = () => {
       }`}
     >
       <div className="section-container">
-        <div className="flex items-center justify-between h-10 md:h-12 border-b border-border/30">
-          <MarketTicker />
-        </div>
         <div className="flex items-center justify-between h-12 md:h-14">
         <a href="#" className="font-serif text-lg md:text-xl tracking-wide text-foreground">
           vinay.inc
