@@ -1,18 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 interface TickerItem {
-  symbol: string;
+  indexName: string;
   label: string;
-  base: number;
   value: number;
   change: number;
   changePercent: number;
 }
 
 const INITIAL: TickerItem[] = [
-  { symbol: "NIFTY", label: "NIFTY 50", base: 22150, value: 22150, change: 120, changePercent: 0.54 },
-  { symbol: "BANKNIFTY", label: "BANK NIFTY", base: 48200, value: 48200, change: -85, changePercent: -0.17 },
-  { symbol: "SENSEX", label: "SENSEX", base: 73500, value: 73500, change: 210, changePercent: 0.29 },
+  { indexName: "NIFTY 50", label: "NIFTY 50", value: 0, change: 0, changePercent: 0 },
+  { indexName: "NIFTY BANK", label: "BANK NIFTY", value: 0, change: 0, changePercent: 0 },
+  { indexName: "NIFTY MIDCAP 100", label: "NIFTY MIDCAP 100", value: 0, change: 0, changePercent: 0 },
 ];
 
 const formatNumber = (n: number) =>
@@ -21,31 +20,73 @@ const formatNumber = (n: number) =>
 const MarketTicker = () => {
   const [items, setItems] = useState<TickerItem[]>(INITIAL);
   const [pulse, setPulse] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval>>();
+  const [isLive, setIsLive] = useState(false);
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setItems((prev) =>
-        prev.map((item) => {
-          const delta = (Math.random() - 0.48) * item.base * 0.001;
-          const newValue = +(item.value + delta).toFixed(0);
-          const newChange = +(newValue - item.base + item.change).toFixed(0);
-          const newPercent = +((newChange / item.base) * 100).toFixed(2);
-          return { ...item, value: newValue, change: newChange, changePercent: newPercent };
-        })
-      );
+    const fetchJson = async (url: string) => {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    };
+
+    const fetchQuotes = async () => {
+      try {
+        const data = await fetchJson("/api/market");
+        const quotes = data?.data as
+          | Array<{
+              index?: string;
+              last?: number;
+              variation?: number;
+              percentChange?: number;
+            }>
+          | undefined;
+
+        if (!quotes || quotes.length === 0) throw new Error("No quote data");
+
+        const byIndex = new Map(quotes.map((quote) => [quote.index, quote]));
+
+        setItems((prev) =>
+          prev.map((item) => {
+            const quote = byIndex.get(item.indexName);
+            if (!quote || typeof quote.last !== "number") {
+              return item;
+            }
+
+            return {
+              ...item,
+              value: Math.round(quote.last),
+              change: Number((quote.variation ?? 0).toFixed(2)),
+              changePercent: Number((quote.percentChange ?? 0).toFixed(2)),
+            };
+          }),
+        );
+
+        setIsLive(true);
+      } catch (error) {
+        console.error("Failed to fetch Yahoo Finance quotes:", error);
+        setIsLive(false);
+      }
+
       setPulse(true);
       setTimeout(() => setPulse(false), 400);
-    }, 2000);
+    };
 
-    return () => clearInterval(intervalRef.current);
+    fetchQuotes();
+    const interval = setInterval(fetchQuotes, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="flex items-center gap-1 md:gap-3 text-[10px] md:text-xs font-sans select-none" title="Live Market Data (Simulated)">
-      <span className={`inline-block w-1.5 h-1.5 rounded-full bg-green-500 ${pulse ? "opacity-100" : "opacity-40"} transition-opacity duration-300`} />
+    <div
+      className="flex items-center gap-1 md:gap-3 text-[10px] md:text-xs font-sans select-none"
+      title={isLive ? "Live market data from NSE" : "Market data unavailable"}
+    >
+      <span
+        className={`inline-block w-1.5 h-1.5 rounded-full ${isLive ? "bg-green-500" : "bg-amber-400"} ${pulse ? "opacity-100" : "opacity-40"} transition-opacity duration-300`}
+      />
       {items.map((item, i) => (
-        <span key={item.symbol} className="flex items-center gap-1 md:gap-1.5">
+        <span key={item.indexName} className="flex items-center gap-1 md:gap-1.5">
           {i > 0 && <span className="text-muted-foreground/30 mx-0.5 hidden sm:inline">|</span>}
           <span className="text-muted-foreground font-medium tracking-wide">{item.label}</span>
           <span className="text-foreground/90 tabular-nums transition-all duration-500">{formatNumber(item.value)}</span>
