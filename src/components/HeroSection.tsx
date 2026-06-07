@@ -1,6 +1,20 @@
 import { useState, useEffect } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 
+const TrustBadge = () => (
+  <div className="flex items-center justify-center">
+    <div className="inline-flex items-center gap-2.5 rounded-full border px-5 py-2.5 shadow-lg animate-fade-up-delay bg-card/60 backdrop-blur-md border-[#C9A86A]/60">
+      <span className="relative flex h-2.5 w-2.5">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
+      </span>
+      <span className="text-sm md:text-base tracking-wide text-foreground font-serif">
+        Trusted Capital Managed: ₹4,00,000+
+      </span>
+    </div>
+  </div>
+);
+
 const HeroSection = () => {
   const [showNotice, setShowNotice] = useState(false);
 
