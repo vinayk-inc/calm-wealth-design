@@ -78,7 +78,11 @@ const HeroSection = () => {
           Mutual fund distributor helping individuals and families invest with clarity and confidence.
         </p>
 
-        <div className="mt-10 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up-delay-2">
+        <div className="mt-8 md:mt-10 mb-2">
+          <TrustBadge />
+        </div>
+
+        <div className="mt-8 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up-delay-2">
           <a
             href="https://calendly.com/vinayk-inc/30min"
             target="_blank"
