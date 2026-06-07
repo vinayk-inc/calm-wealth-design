@@ -64,7 +64,26 @@ const HeroSection = () => {
           Mutual fund distributor helping individuals and families invest with clarity and confidence.
         </p>
 
-        <div className="mt-10 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up-delay-2">
+        {/* Trust Badge */}
+        <div className="mt-8 md:mt-10 animate-fade-up-delay-3">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-6 px-5 sm:px-8 py-3.5 rounded-sm border border-gold-premium/60 bg-card/40 backdrop-blur-md shadow-[0_8px_32px_-8px_rgba(0,0,0,0.5)] transition-all duration-500 hover:bg-card/60 hover:border-gold-premium hover:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.6)]">
+            <div className="flex items-center gap-2.5">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <span className="text-sm text-foreground tracking-wide font-sans whitespace-nowrap">
+                Trusted Capital Managed: <span className="font-medium text-gold-premium">₹4,00,000+</span>
+              </span>
+            </div>
+            <div className="hidden sm:block h-4 w-px bg-gold-premium/30" />
+            <div className="text-sm text-foreground tracking-wide font-sans whitespace-nowrap">
+              Monthly SIP Commitments: <span className="font-medium text-gold-premium">₹45,000+</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up-delay-2">
           <a
             href="https://calendly.com/vinayk-inc/30min"
             target="_blank"
