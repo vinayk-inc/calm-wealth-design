@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import heroBg from "@/assets/hero-bg.jpg.asset.json";
+import heroBg from "@/assets/image.jpeg";
 
 const HeroSection = () => {
   const [showNotice, setShowNotice] = useState(false);
@@ -49,7 +49,7 @@ const HeroSection = () => {
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroBg.url})` }}
+        style={{ backgroundImage: `url(${heroBg})` }}
       />
       <div className="absolute inset-0 bg-background/60" />
 
