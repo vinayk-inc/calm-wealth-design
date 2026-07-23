@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg.jpg.asset.json";
 
 const HeroSection = () => {
   const [showNotice, setShowNotice] = useState(false);
